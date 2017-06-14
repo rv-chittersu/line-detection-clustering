@@ -19,6 +19,12 @@ class LineSegment(object):
             "p2 is not of type Point, but of %r" % type(p2)
         self.p1 = p1
         self.p2 = p2
+        self.slope = self.getSlope()
+
+    def getSlope(self):
+    	if(self.p1.y == self.p2.y):
+    		return float('inf')
+    	return float(p2.x - p1.x)/(p2.y - p1.y)
 
 
 def segments_distance(segment1, segment2):
