@@ -13,7 +13,7 @@ canny_max_threshold = 400
 
 hough_threshold = 30
 
-gray_sacle_image = cv2.imread('testData/'+fileName, cv2.IMREAD_GRAYSCALE)
+gray_sacle_image = cv2.imread('testData/'+file_name, cv2.IMREAD_GRAYSCALE)
 canny_edge_image = cv2.canny(gray_sacle_image,canny_min_threshold,canny_max_threshold)
 
 util.showImage(canny_edge_image,'Canny Edge Detection')
@@ -34,4 +34,4 @@ join_clustered_lines = clus.joinClustering(hough_lines, 20)
 
 filtered_lines = util.filter(join_clustered_lines)
 
-util.showImage(cv2.cvtColor(gray_sacle_image, cv2.COLOR_GRAY2BGR), 'Join Line Clustering', filtered_lines, True)
+util.showImage(cv2.cvtColor(gray_sacle_image, cv2.COLOR_GRAY2BGR), 'Join Line Clustering', filtered_lines, True, file_name)

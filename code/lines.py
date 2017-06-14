@@ -10,7 +10,7 @@ class Point(object):
         self.y = float(y)
 
 
-class LineSegment(object):
+class Line(object):
     """A line segment in a two dimensional space."""
     def __init__(self, p1, p2):
         assert isinstance(p1, Point), \
@@ -24,7 +24,7 @@ class LineSegment(object):
 
     def getSlope(self):
     	if(self.p1.y == self.p2.y):
-    		return float('inf')
+    		return 99999
     	return float(p2.x - p1.x)/(p2.y - p1.y)
 
     def getLength(self)
