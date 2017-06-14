@@ -20,11 +20,15 @@ class LineSegment(object):
         self.p1 = p1
         self.p2 = p2
         self.slope = self.getSlope()
+        self.length = self.getLength()
 
     def getSlope(self):
     	if(self.p1.y == self.p2.y):
     		return float('inf')
     	return float(p2.x - p1.x)/(p2.y - p1.y)
+
+    def getLength(self)
+    	return math.hypot(p2.x - p1.x, p2.y - p1.y)
 
 
 def segments_distance(segment1, segment2):
