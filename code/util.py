@@ -21,7 +21,7 @@ def showImage(image, str, input_lines = [], colors = False, file_name = False):
 		index = index + 1
 
 	if file_name:
-		cv2.imwrite('../result/'+file_name,image)
+		cv2.imwrite('../'+file_name,image)
 
 	cv2.imshow(str,image)
 	cv2.waitKey(0)
@@ -45,3 +45,14 @@ def filter(lines):
 			result_lines.append(line)
 
 	return result_lines
+
+def drawObservations(image,line1,line2,line3,string):
+	cv2.line(image, (int(line1.p1.x), int(line1.p1.y)), (int(line1.p2.x), int(line1.p2.y)), [255,0,0] , 2)
+	cv2.line(image, (int(line2.p1.x), int(line2.p1.y)), (int(line2.p2.x), int(line2.p2.y)), [0,255,0] , 2)
+	cv2.line(image, (int(line3.p1.x), int(line3.p1.y)), (int(line3.p2.x), int(line3.p2.y)), [0,0,255] , 2)
+	cv2.imshow(string,image)
+	cv2.waitKey(0)
+
+def drawObservation(image,line1,string):
+	cv2.line(image, (int(line1.p1.x), int(line1.p1.y)), (int(line1.p2.x), int(line1.p2.y)), [255,0,0] , 2)
+	cv2.imwrite('../res/{}.jpg'.format(string),image)

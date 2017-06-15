@@ -1,5 +1,7 @@
 import math
 import lines
+import util
+import cv2
 
 def clusterBasedOnSlope(lines, dist_threshold, slope_threshold):
 	lines_count = len(lines)
@@ -30,6 +32,7 @@ def clusterBasedOnSlope(lines, dist_threshold, slope_threshold):
 		if len(min_pair) == 0:
 			break
 		new_line = getMergedLine(lines[min_pair[0]], lines[min_pair[1]])
+		
 		lines[min_pair[0]] = new_line
 		active_lines[min_pair[1]] = 0
 		#update
@@ -50,8 +53,9 @@ def clusterBasedOnSlope(lines, dist_threshold, slope_threshold):
 	return result_lines
 
 
-def joinClustering(lines, dist_threshold, slope_threshold, offset_threshold):
+def joinClustering(lines, dist_threshold, slope_threshold, offset_threshold,gray_sacle_image):
 	lines_count = len(lines)
+	
 	current_count = lines_count
 	active_lines = [1 for x in range(lines_count)]
 	mutualSlope = [[0 for x in range(lines_count)] for y in range(lines_count)]
@@ -81,6 +85,8 @@ def joinClustering(lines, dist_threshold, slope_threshold, offset_threshold):
 		if len(min_pair) == 0:
 			break
 		new_line = getMergedLine(lines[min_pair[0]], lines[min_pair[1]])
+
+		
 		lines[min_pair[0]] = new_line
 		active_lines[min_pair[1]] = 0
 		#update
@@ -113,11 +119,13 @@ def getMergedLine(line1, line2):
 	new_line_lengths.append(getDistanceBtwPoints(line1.p1,line2.p2))
 	new_line_lengths.append(getDistanceBtwPoints(line1.p2,line2.p1))
 	new_line_lengths.append(getDistanceBtwPoints(line1.p2,line2.p2))
+	new_line_lengths.append(line1.length)
+	new_line_lengths.append(line2.length)
 
 	max_index = 0
 	max_length = new_line_lengths[0]
 
-	for index in range(1,4):
+	for index in range(1,6):
 		if new_line_lengths[index] > max_length:
 			max_index = index
 			max_length = new_line_lengths[index]
@@ -133,6 +141,12 @@ def getMergedLine(line1, line2):
 
 	if max_index == 3:
 		return lines.Line(line1.p2,line2.p2)
+
+	if max_index == 4:
+		return line1
+
+	if max_index == 5:
+		return line2
 	
 
 def getMinimalDistance(line1, line2):
@@ -162,11 +176,13 @@ def getMinMid(line1,line2):
 	new_line_lengths.append(getDistanceBtwPoints(line1.p1,line2.p2))
 	new_line_lengths.append(getDistanceBtwPoints(line1.p2,line2.p1))
 	new_line_lengths.append(getDistanceBtwPoints(line1.p2,line2.p2))
+	new_line_lengths.append(line1.length)
+	new_line_lengths.append(line2.length)
 
 	min_index = 0
 	min_length = new_line_lengths[0]
 
-	for index in range(1,4):
+	for index in range(1,6):
 		if new_line_lengths[index] < min_length:
 			min_length = new_line_lengths[index]
 			min_index = index
@@ -182,6 +198,12 @@ def getMinMid(line1,line2):
 
 	if min_index == 3:
 		return lines.Point((line1.p2.x + line2.p2.x)*0.5, (line1.p2.y + line2.p2.y)*0.5)
+
+	if min_index == 4:
+		return lines.Point((line1.p1.x + line1.p2.x)*0.5, (line1.p1.y + line1.p2.y)*0.5)
+
+	if min_index == 5:
+		return lines.Point((line2.p1.x + line2.p2.x)*0.5, (line2.p1.y + line2.p2.y)*0.5)
 
 def getOffset(line1, line2):
 	new_line = getMergedLine(line1, line2)

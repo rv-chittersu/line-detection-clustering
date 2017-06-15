@@ -9,6 +9,9 @@ class Point(object):
         self.x = float(x)
         self.y = float(y)
 
+    def __str__(self):
+    	return "({},{})".format(self.x, self.y)
+
 
 class Line(object):
     """A line segment in a two dimensional space."""
@@ -29,6 +32,9 @@ class Line(object):
 
     def getLength(self):
     	return math.hypot(self.p2.x - self.p1.x, self.p2.y - self.p1.y)
+
+    def __str__(self):
+    	return "{} -> {}".format(str(self.p1),str(self.p2))
 
 
 def segments_distance(segment1, segment2):
