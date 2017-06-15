@@ -2,40 +2,38 @@ import cv2
 import os
 import sys
 import lines
+import colorsys
 
-def showImage(image, str, lines = [], colors = False, file_name = False):
-	pid = os.fork()
-	if(pid != 0):
-		return
-	lines_count = len(lines)
+def showImage(image, str, input_lines = [], colors = False, file_name = False):
+	lines_count = len(input_lines)
+	HSV_tuples = []
+	RGB_tuples = []
 	if(colors):
-		HSV_tuples = [(x*1.0/N, 0.5, 0.5) for x in range(N)]
+		HSV_tuples = [(x*1.0/lines_count, 0.5, 0.5) for x in range(lines_count)]
     	RGB_tuples = map(lambda x: colorsys.hsv_to_rgb(*x), HSV_tuples)
 
-    index = 0
-    for line in lines:
-    	if(colors):
-        	cv2.line(image, (line.p1.x, line.p1.y), (line.p2.x, line.p2.y),tuple([255*x for x in RGB_tuples[index]]) , 2)
-        else:
-        	cv2.line(image, (line.p1.x, line.p1.y), (line.p2.x, line.p2.y), [0,255,0] , 2)
-        index = index + 1
+	index = 0
+	for line in input_lines:
+		if(colors):
+			cv2.line(image, (int(line.p1.x), int(line.p1.y)), (int(line.p2.x), int(line.p2.y)),tuple([255*x for x in RGB_tuples[index]]) , 2)
+		else:
+			cv2.line(image, (int(line.p1.x), int(line.p1.y)), (int(line.p2.x), int(line.p2.y)), [0,255,0] , 2)
+		index = index + 1
 
+	if file_name:
+		cv2.imwrite('../result/'+file_name,image)
 
-    if(file_name)
-    	cv2.imwrite('result/'+file_name,image)
+	cv2.imshow(str,image)
+	cv2.waitKey(0)
 
-    cv2.imshow(str,image)
-    cv2.waitKey(0)
-    sys.exit()
-
-def vectorToLines(vectorLines):
-	lines = []
+def vectorToLines(vector_lines):
+	new_lines = []
 	for line in vector_lines:
-		new_line = Line(Point(line[0][0], line[0][1]), Point(line[0][2], line[0][3]))
+		new_line = lines.Line(lines.Point(line[0][0], line[0][1]), lines.Point(line[0][2], line[0][3]))
 		if(new_line.length != 0):
-			lines.append(new_line)
+			new_lines.append(new_line)
 
-	return lines
+	return new_lines
 
 def filter(lines):
 	result_lines = []
