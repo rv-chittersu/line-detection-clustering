@@ -66,13 +66,13 @@ def joinClustering(lines, dist_threshold, slope_threshold, offset_threshold,gray
 		for index2 in range(index1 + 1, lines_count):
 			mutualDistance[index1][index2] = mutualDistance[index2][index1] = getMinimalDistance(lines[index1], lines[index2])
 			mutualSlope[index1][index2] = mutualSlope[index2][index1] = getDevtnSlopeBtwnLines(lines[index1],lines[index2])
-			mutualOffset[index1][index2] = mutualSlope[index2][index1] = getOffset(lines[index1],lines[index2])
+			mutualOffset[index1][index2] = mutualOffset[index2][index1] = getOffset(lines[index1],lines[index2])
 
 
 	while(True):
 		print current_count
 		min_pair = []
-		min_value_observed = slope_threshold * offset_threshold
+		min_value_observed = dist_threshold * offset_threshold
 		for index1 in range(lines_count):
 			if active_lines[index1] == 0:
 				continue
@@ -97,7 +97,7 @@ def joinClustering(lines, dist_threshold, slope_threshold, offset_threshold,gray
 			if active_lines[index] == 1 and index != updated_index:
 				mutualDistance[index][updated_index] = mutualDistance[updated_index][index] = getMinimalDistance(lines[index],lines[updated_index])
 				mutualSlope[index][updated_index] = mutualSlope[updated_index][index] = getDevtnSlopeBtwnLines(lines[index],lines[updated_index])
-				mutualOffset[index][updated_index] = mutualSlope[updated_index][index] = getOffset(lines[index],lines[updated_index])
+				mutualOffset[index][updated_index] = mutualOffset[updated_index][index] = getOffset(lines[index],lines[updated_index])
 		current_count = current_count - 1
 
 
@@ -158,7 +158,7 @@ def getSlopeBtwnLines(line1, line2):
 	product_of_slopes = line1.slope*line2.slope
 	if product_of_slopes == -1:
 		return 99999
-	return float(line1.slope - line2.slope)/(1 + product_of_slopes)
+	return abs(float(line1.slope - line2.slope)/(1 + product_of_slopes))
 
 def getDevtnSlopeBtwnLines(line1,line2):
 	long_line = line1

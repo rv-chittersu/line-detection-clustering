@@ -2,6 +2,7 @@ import cv2
 import os
 import sys
 import lines
+import clus
 import colorsys
 
 def showImage(image, str, input_lines = [], colors = False, file_name = False):
@@ -56,3 +57,11 @@ def drawObservations(image,line1,line2,line3,string):
 def drawObservation(image,line1,string):
 	cv2.line(image, (int(line1.p1.x), int(line1.p1.y)), (int(line1.p2.x), int(line1.p2.y)), [255,0,0] , 2)
 	cv2.imwrite('../res/{}.jpg'.format(string),image)
+
+def commbinedInfo(line1,line2):
+	print line1
+	print line2
+	print clus.getMinimalDistance(line1,line2)
+	print clus.getDevtnSlopeBtwnLines(line1,line2)
+	print clus.getOffset(line1, line2)
+	print " "
