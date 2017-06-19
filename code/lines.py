@@ -70,7 +70,8 @@ def segments_intersect(segment1, segment2):
     True
     """
     dx1 = segment1.p2.x - segment1.p1.x
-    dy1 = segment1.p2.y - segment1.p2.y
+    #dy1 = segment1.p2.y - segment1.p2.y
+    dy1 = segment1.p2.y - segment1.p1.y
     dx2 = segment2.p2.x - segment2.p1.x
     dy2 = segment2.p2.y - segment2.p1.y
     delta = dx2 * dy1 - dy2 * dx1

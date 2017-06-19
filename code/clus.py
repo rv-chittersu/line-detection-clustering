@@ -3,7 +3,7 @@ import lines
 import util
 import cv2
 
-def clusterBasedOnSlope(lines, dist_threshold, slope_threshold):
+def clusterBasedOnSlope(lines, dist_threshold, slope_threshold,image):
 	lines_count = len(lines)
 	current_count = lines_count
 
@@ -32,6 +32,9 @@ def clusterBasedOnSlope(lines, dist_threshold, slope_threshold):
 		if len(min_pair) == 0:
 			break
 		new_line = getMergedLine(lines[min_pair[0]], lines[min_pair[1]])
+
+		#string = "l1 - {},l2 - {}, dist - {}, slope - {}".format(lines[min_pair[0]], lines[min_pair[1]], getMinimalDistance(lines[min_pair[0]],lines[min_pair[1]]), getSlopeBtwnLines(lines[min_pair[0]],lines[min_pair[1]]))
+		#util.drawObservations(cv2.cvtColor(image, cv2.COLOR_GRAY2BGR),lines[min_pair[0]],lines[min_pair[1]], new_line,string)
 		
 		lines[min_pair[0]] = new_line
 		active_lines[min_pair[1]] = 0

@@ -26,7 +26,7 @@ hough_lines = util.vectorToLines(hough_lines)
 
 #util.showImage(cv2.cvtColor(gray_sacle_image, cv2.COLOR_GRAY2BGR), 'Hough Line Detection', hough_lines, False ,'res1.jpg')
 
-slope_clustered_lines = clus.clusterBasedOnSlope(hough_lines, 2, 0.37)
+slope_clustered_lines = clus.clusterBasedOnSlope(hough_lines, 2, 0.37,gray_sacle_image)
 
 #for index in range(len(slope_clustered_lines)):
 #	util.drawObservation(cv2.cvtColor(gray_sacle_image, cv2.COLOR_GRAY2BGR), slope_clustered_lines[index], "index{}".format(index))
