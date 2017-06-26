@@ -20,21 +20,46 @@ class Line(object):
             "p1 is not of type Point, but of %r" % type(p1)
         assert isinstance(p2, Point), \
             "p2 is not of type Point, but of %r" % type(p2)
+
         self.p1 = p1
         self.p2 = p2
         self.slope = self.getSlope()
         self.length = self.getLength()
+        if self.length == 0:
+        	return
+
+
+        self.sin = (p2.x - p1.x)/self.length
+        self.cos = (p2.y - p1.y)/self.length
+
+        self.count = float(int(self.length) + 1)
+        self.mean = Point(p1.x + self.sin * int(self.length) * 0.5, p1.y + self.cos * int(self.length) * 0.5)
+
+
+        self.sX = self.count * (p1.x) + (self.sin) * self.sum(int(self.length))
+        self.sY = self.count * (p1.y) + (self.cos) * self.sum(int(self.length))
+
+        self.sXY = self.count * (p1.x) * (p1.y) + (self.sin) * (self.cos) * self.sumSqr(int(self.length)) + (p1.x * self.cos + p1.y * self.sin) * self.sum(int(self.length))
+        self.sXX =  self.count * (p1.x) * (p1.x) + (self.sin) * (self.sin) * self.sumSqr(int(self.length)) + (p1.x * self.sin * 2) * self.sum(int(self.length))
+        self.sYY =  self.count * (p1.y) * (p1.y) + (self.cos) * (self.cos) * self.sumSqr(int(self.length)) + (p1.y * self.cos * 2) * self.sum(int(self.length))
+
 
     def getSlope(self):
-    	if(self.p1.y == self.p2.y):
+    	if(self.p1.x == self.p2.x):
     		return 99999
-    	return float(self.p2.x - self.p1.x)/(self.p2.y - self.p1.y)
+    	return float(self.p2.y - self.p1.y)/(self.p2.x - self.p1.x)
 
     def getLength(self):
     	return math.hypot(self.p2.x - self.p1.x, self.p2.y - self.p1.y)
 
     def __str__(self):
     	return "{} -> {}".format(str(self.p1),str(self.p2))
+
+    def sumSqr(self,i):
+    	return (i * (i + 1) * (2 *i + 1))/6
+
+    def sum(self,i):
+    	return (i * (i + 1))/2
 
 
 def segments_distance(segment1, segment2):
